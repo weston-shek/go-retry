@@ -1,32 +1,32 @@
 # go-retry
 
-[English](./README.md)|[中文](./README-ZH.md)
+[English](./README.md) | [中文](./README-ZH.md)
 
-## Introduction
+## 简介
 
-A simple retry method.
+一个简单的重试方法。
 
-In reality, there is often a need to retry processes that may fail, such as `IO operations`, `API interactions`, `remote calls`, and so on, so here is the current small project.
+现实工作中，经常有需求针对 `IO操作` 、 `API交互` 、 `远程调用` 等可能会失败的过程进行重试，于是就有当前这个小项目。
 
-You can simply configure the number of retry attempts, interval time, conditions to stop retry, etc. If the final result does not meet the expectation after max retry attempts, it will throw a `goretry.ErrMaxApt` error.
+可以简单配置充实次数、间隔时间、停止充实的条件等，如果经过充实最终结果不符合预期，将抛出 `goretry.ErrMaxApt` 错误。
 
-## Get the package
+## 如何获取
 
-Download into local or import directly.
+下载模块后导入使用。
 
 ```shell
 go get -u github.com/weston-shih/go-retry
 ```
 
-or
+或者
 
 ```go
 import "github.com/weston-shih/go-retry"
 ```
 
-## Usage
+## 使用
 
-The retry option configuration is performed first.
+首先进行重试选项配置。
 
 ```go
 package main
@@ -60,7 +60,7 @@ func main() {
 }
 ```
 
-You can customize the condition that when the `Judgment` method returns `true`, the expectation is met and the retry process will be terminated.
+可以自定义判断条件，即当 `Judgment` 方法返回结果为 `true` 时候，认为已达到预期，重试流程将会终止。
 
 ```go
 // e.g. the retry will continue if err equals ErrTest.
@@ -68,23 +68,23 @@ var ErrTest = errors.New("Just a test.")
 op.SetJudgment(func(err ...interface{}) bool { return err[0] == ErrTest })
 ```
 
-- Use retries for functions with error return values only
-  
+- 仅有错误返回值的函数使用重试
+
   ```go
-    var (
+   var (
       ErrOdd  = errors.New("Odd number")
       ErrEven = errors.New("Even number")
-    )
-    got := op.ReDo(
-    func() error {
-      if mod := test.seed % 2; mod == 0 {
-        return ErrEven
-      }
-      return ErrOdd
-    })
+   )
+   got := op.ReDo(
+         func() error {
+            if mod := test.seed % 2; mod == 0 {
+               return ErrEven
+            }
+            return ErrOdd
+         })
   ```
 
-- Use retries for functions containing data and error return values
+- 含有数据与错误返回值的函数使用重试
 
    ```go
    import "time"
@@ -103,8 +103,8 @@ op.SetJudgment(func(err ...interface{}) bool { return err[0] == ErrTest })
    }
    ```
 
-## Feedback
+## 反馈
 
-Any problems encountered in the use is welcome to feedback, I'm going to follow up as soon as possible.
+使用中遇到任何问题欢迎反馈，将尽快跟进。
 
-Also welcome to optimize the code together :)
+同时也欢迎一起优化代码：）
